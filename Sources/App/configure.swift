@@ -11,7 +11,7 @@ import Foundation
 public func configure(_ app: Application) async throws {
     setUpMiddleware(of: app)
     try configureServerHTTP(of: app)
-    configureDatabase(of: app)
+    configureDatabase(of: app, useLocal: false)
     
     // MARK: routes 등록
     try routes(app)
