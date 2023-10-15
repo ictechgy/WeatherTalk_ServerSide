@@ -1,9 +1,6 @@
 import Vapor
 import Fluent
 import FluentKit
-import APNS
-import APNSCore
-import APNSURLSession
 import MultipartKit
 
 // MARK: - 클라이언트 요청 처리
@@ -124,7 +121,7 @@ private func routeSocketEcho(app: Application) {
             ws.send("잘 받았어요 from server")
             
             Task {
-                try await sendAPNS(title: "코든/앱을 통한 전송", subTitle:"보내지나요?")
+                try await APNSManager.shared.sendSimpleAlert(title: "코든/앱을 통한 전송", subTitle:"보내지나요?")
             }
         }
         
@@ -134,38 +131,4 @@ private func routeSocketEcho(app: Application) {
             ws.sendPing()
         }
     }
-}
-
-private func sendAPNS(title: String, subTitle: String) async throws {
-    // APNS
-    let apnsConfig = APNSClientConfiguration(
-        authenticationMethod: .jwt(privateKey: try .init(pemRepresentation: Secrets.apnsKey), keyIdentifier: Secrets.apnsKeyIdentifier, teamIdentifier: Secrets.apnsTeamIdentifier),
-        environment: .sandbox
-    )
-    
-    let client = APNSClient(configuration: apnsConfig, eventLoopGroupProvider: .createNew, responseDecoder: JSONDecoder(), requestEncoder: JSONEncoder())
-    
-    try await sendSimpleAlert(with: client, title: title, subTitle: subTitle)
-    client.shutdown { _ in
-        //
-    }
-}
-
-private func sendSimpleAlert(with client: some APNSClientProtocol, title: String, subTitle: String) async throws {
-    try await client.sendAlertNotification(
-        .init(
-            alert: .init(
-                title: .raw(title),
-                subtitle: .raw(subTitle),
-                body: .raw("Body"),
-                launchImage: nil
-            ),
-            expiration: .immediately,
-            priority: .immediately,
-            topic: Secrets.apnsAppBundleID,
-            payload: EmptyPayload()
-        ),
-        // let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        deviceToken: Secrets.deviceToken
-    )
 }

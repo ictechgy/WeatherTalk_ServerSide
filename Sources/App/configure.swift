@@ -89,3 +89,5 @@ private struct DatabaseAccessInfo {
     let password: String
     let database: String
 }
+
+// MARK: APNS 설정
