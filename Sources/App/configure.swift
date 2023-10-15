@@ -1,9 +1,6 @@
 import Vapor
 import NIOSSL
 import FluentMySQLDriver
-import APNS
-import APNSCore
-import APNSURLSession
 import Foundation
 
 // MARK: - 서버 기본 설정
@@ -89,5 +86,3 @@ private struct DatabaseAccessInfo {
     let password: String
     let database: String
 }
-
-// MARK: APNS 설정
