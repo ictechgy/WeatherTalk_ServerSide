@@ -8,6 +8,9 @@
 import Vapor
 import Fluent
 
+// MARK: - User
+
+// MARK: User DTO for add
 /// 신규 추가용 유저 DTO
 struct UserToBeAdded: Decodable {
     let name: String
@@ -15,17 +18,18 @@ struct UserToBeAdded: Decodable {
     let userDescription: String
 }
 
+// MARK: - User Entity
 /// 유저 Entity
 final class User: Model, Content {
     static let schema = "users"
     
-    @ID(custom: "id", generatedBy: .database) // Int 타입이면 기본값이 .database
+    @ID(custom: "id", generatedBy: .database) // Generator -> Self가 Int 타입이면 기본값이 .database
     var id: Int?
     
     @Field(key: "name")
     var name: String
     
-    @OptionalParent(key: "group_id")
+    @OptionalParent(key: "group_id") // 유의: Optional Parent의 경우 생성에 nil 불가. Decoding fail
     var group: Group?
     
     @OptionalField(key: "image_url")

@@ -6,10 +6,10 @@ import APNSCore
 import APNSURLSession
 import Foundation
 
-// configures your application
+// MARK: - 서버 기본 설정
 public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
-     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.routes.defaultMaxBodySize = "100mb"
     
     let certs = try NIOSSLCertificate.fromPEMFile(Secrets.certPath)

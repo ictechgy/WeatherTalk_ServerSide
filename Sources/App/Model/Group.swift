@@ -8,6 +8,7 @@
 import Vapor
 import Fluent
 
+// MARK: - GROUP Entity
 final class Group: Model, Content {
     static let schema = "groups"
     
