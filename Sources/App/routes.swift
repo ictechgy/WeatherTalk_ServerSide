@@ -34,6 +34,7 @@ func routes(_ app: Application) throws {
     }
 }
 
+// TODO: - Controller로 분리하기
 // MARK: - GET 정의
 
 /// `/user/list` 유저 리스트 얻기
